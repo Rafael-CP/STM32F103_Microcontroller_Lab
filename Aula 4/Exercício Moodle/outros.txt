@@ -1,0 +1,11 @@
+;=========EXERCICIO 1=======
+		EXPORT __main
+			
+		AREA 	MPROG, CODE, READONLY
+__main
+		mov    r0,#4196
+        movw   r1,#&704a
+        movt   r1,#50176
+        nop
+LOOP	B		LOOP
+		END

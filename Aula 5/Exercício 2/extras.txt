@@ -1,0 +1,132 @@
+;========= EXERCICIO 2A ========= PELO INICIO
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	16				;16 elementos de 1 bytes ocupam 16 espaços
+vt2		space	16	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1-1		;recebe endereço de vt1
+		MOV		R8, #16			;contador
+		
+LOOP	LDRSB	R1,[R0,#1]!		;carrega o conteudo de r0 em r1 (dados de vt1)
+		STRB	R1,[R0,#dist]	;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		;ADD		R0,#1		;caminha em r0 para pegar prox elemento de vt1 [NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+
+;========= EXERCICIO 2B ========= DO INICIO
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	16				;8 elementos de 2 bytes ocupam 16 espaços
+vt2		space	16	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1-2		;recebe endereço de vt1
+		MOV		R8, #8			;contador
+		
+LOOP	LDRSH	R1,[R0,#2]!		;carrega o conteudo de r0 em r1 (dados de vt1)
+		STRH	R1,[R0,#dist]	;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		;ADD		R0,#2		;caminha em r0 para pegar prox elemento de vt1 [NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+		
+;========= EXERCICIO 2B ========= DO FINAL
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	16				;8 elementos de 2 bytes ocupam 16 espaços
+vt2		space	16	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+16		;recebe endereço de vt1 + 16 para ultimo elemento
+		MOV		R8, #8			;contador
+		
+LOOP	LDRSH	R1,[R0,#-2]!	;carrega o conteudo de r0 em r1 (dados de vt1) e decrementa 2 para andar no vetor
+		STRH	R1,[R0,#dist]	;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		;ADD		R0,#2		; [NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+
+;========= EXERCICIO 2C ========= DO INÍCIO
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	32				;8 elementos de 4 bytes ocupam 32 espaços
+vt2		space	32	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1-4		;recebe endereço de vt1
+		MOV		R8, #8			;contador
+		
+LOOP	LDR		R1,[R0,#4]!		;carrega o conteudo de r0 em r1 (dados de vt1)
+		STR		R1,[R0,#dist]	;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		;ADD		R0,#4		;caminha em r0 para pegar prox elemento de vt1 [NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+		
+;========= EXERCICIO 2C ========= DO FINAL
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	32				;8 elementos de 4 bytes ocupam 32 espaços
+vt2		space	32	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+32		;recebe endereço de vt1 + 32 para ultimo elemento
+		MOV		R8, #8			;contador
+		
+LOOP	LDR		R1,[R0,#-4]!	;carrega o conteudo de r0 em r1 (dados de vt1) e decrementa 4 para andar no vetor
+		STR		R1,[R0,#dist]	;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		;ADD		R0,#4		;caminha em r0 para pegar prox elemento de vt1 [NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+
+;========= EXERCICIO 1C ========= DO FINAL E ESPELHADO  (PRE INDEXADO)
+		EXPORT 	__main
+			
+dist	EQU		vt2-vt1
+	
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	32		
+vt2		space	32	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+32		;recebe endereço de vt1 deslocado em 28 para pegar o ultimo elemento
+		MOV		R8, #8			;contador
+		LDR		R7,=vt2-4
+		
+LOOP	LDR		R1,[R0]			;carrega o conteudo de r0 em r1 (dados de vt1)
+		STR		R1,[R7,#4]!		;armazena o conteudo de r1 em r0 deslocado de 16 espaços
+		SUB		R0,#4			;caminha em r0 para pegar prox elemento de vt1
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END		

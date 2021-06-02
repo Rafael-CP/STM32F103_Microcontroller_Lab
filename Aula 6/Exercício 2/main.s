@@ -1,0 +1,16 @@
+		EXPORT  __main
+tam		EQU		8			
+		AREA	M_DADOS, DATA, READWRITE
+vth		SPACE	tam		
+		AREA	M_PROGRAMA, CODE, READONLY
+__main
+		LDR		R0,=vth
+		LDR		R1,=vth+tam-2
+LOOP	LDRH	R3,[R0]
+		LDRH	R4,[R1]
+		STRH	R4,[R0], #2
+		STRH	R3,[R1], #-2
+		CMP		R1,R0		;SE R1>R0 ATIVA O LOOP,
+		BCS		LOOP		;SE R0 FOR MAIOR OU IGUAL A R1, SAI DO LOOP
+		B		__main
+		END

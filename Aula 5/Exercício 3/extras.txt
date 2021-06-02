@@ -1,0 +1,91 @@
+;========= EXERCICIO 3A ========= DO INICIO
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	16		
+vt2		space	16	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1		;recebe endereço de vt1
+		MOV		R8, #8		;contador
+		
+LOOP	LDRSH	R1,[R0], #2	;carrega o conteudo de r0 em r1 (dados de vt1) e soma 2 em r0
+		STRH	R1,[R0,#14]	;armazena o conteudo de r1 em r0 deslocado de 14 espaços, pois ja foi somado 2 no começo
+		;ADD		R0,#2	;[NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1		;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+		
+;========= EXERCICIO 3B ========= DO FINAL
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	16		
+vt2		space	16	
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+14		;recebe endereço de vt1 deslocado em 14 para pegar o ultimo elemento
+		MOV		R8, #8			;contador
+		
+LOOP	LDRSH	R1,[R0], #-2	;carrega o conteudo de r0 em r1 (dados de vt1) e subtrai 2 em r0
+		STRH	R1,[R0,#18]		;armazena o conteudo de r1 em r0 deslocado de 18 espaços, 
+								;pois foi subtraido 2 e isso precisa ser compensado fazendo 16+2
+		;ADD		R0,#2		;[NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+
+;========= EXERCICIO 3C ========= DO FINAL
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	32	; 8 elementos de 4 bytes ocupam 32 espaços
+vt2		space	32		
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+28		;recebe endereço de vt1 deslocado em 28 para pegar o ultimo elemento
+		MOV		R8, #8			;contador
+		
+LOOP	LDR		R1,[R0], #-4	;carrega o conteudo de r0 em r1 (dados de vt1) e subtrai 4 em r0
+		STR		R1,[R0,#36]		;armazena o conteudo de r1 em r0 deslocado de 36 espaços, 
+								;pois foi subtraido 4 e isso precisa ser compensado fazendo 32+4
+		;ADD	R0,#2			;[NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
+		
+;========= EXERCICIO 3C ========= DO FINAL ESPELHADO
+		EXPORT 	__main
+					
+dist	EQU		vt2-vt1
+
+		AREA 	M_DADOS, DATA,	READWRITE		
+vt1		space	32	; 8 elementos de 4 bytes ocupam 32 espaços
+vt2		space	32		
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+		LDR		R0,=vt1+28		;recebe endereço de vt1 deslocado em 28 para pegar o ultimo elemento
+		MOV		R8, #8			;contador
+		LDR		R7,=vt2
+		
+LOOP	LDR		R1,[R0], #-4	;carrega o conteudo de r0 em r1 (dados de vt1) e subtrai 4 em r0
+		STR		R1,[R7], #4	;armazena o conteudo de r1 em r0 deslocado de 36 espaços, 
+		
+		;ADD	R0,#2			;[NÃO SERÁ MAIS NECESSÁRIO]
+		SUBS	R8,#1			;subtrai para o contador
+		BNE		LOOP
+		B		__main
+		END
