@@ -1,0 +1,56 @@
+;---Ex_9.1b - bin(1b<100)->bcd_c(dez,uni)
+		export 	__main
+;---dir. area-dados-(sram)
+		area 	dds1, data, readwrite
+vbin 	space	1
+bcd 	space	1 ;(dez:uni)
+;---dir. area-progr. (flash)
+		area m_prg, code, readonly
+__main
+pk0 	ldr 	r0,=vbin
+rk0 	mov 	r1,#0
+		movt 	r1,#0
+		mov 	r3,r1 ;bcd(dez:uni)
+rk0a 	ldrb 	r1,[r0] ;vbin
+		mov 	r2,r1
+		cmp 	r2,#100 ;
+		bhs 	rk0a ;vbin>99?
+rk1 	cmp 	r2,#10
+		blo 	pk1
+		subs 	r2,#10 ;nib_LSB
+		add 	r3,#1 ;r3=r3+1
+		b 		rk1
+pk1 	lsl 	r3,#4
+		add 	r3,r2
+		strb	r3,[r0,#bcd-vbin];save bcd
+		b 		rk0
+		end
+
+
+;---Ex_9.1b - bin(0<1b<255)->bcd_c(dez,uni)
+		export 	__main
+;---dir. area-dados-(sram)
+		area 	dds1, data, readwrite
+vbin 	space	1
+bcd 	space	1 ;(dez:uni)
+;---dir. area-progr. (flash)
+		area m_prg, code, readonly
+__main
+pk0 	ldr 	r0,=vbin
+rk0 	mov 	r1,#0
+		movt 	r1,#0
+		mov 	r3,r1 ;bcd(dez:uni)
+		ldrb 	r1,[r0] ;vbin
+		mov 	r2,r1
+; NAO SERÃO MAIS NECESSARIOS		;cmp 	r2,#100 ;
+									;bhs 	rk0a ;vbin>99?
+rk1 	cmp 	r2,#10
+		blo 	pk1
+		subs 	r2,#10 ;nib_LSB
+		add 	r3,#1 ;r3=r3+1
+		b 		rk1
+pk1 	lsl 	r3,#4
+		add 	r3,r2
+		strb	r3,[r0,#bcd-vbin];save bcd
+		b 		rk0
+		end

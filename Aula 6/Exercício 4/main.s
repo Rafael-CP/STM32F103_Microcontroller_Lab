@@ -1,7 +1,5 @@
-		EXPORT  __main
-			
+		EXPORT  __main			
 tam		EQU		5	
-	
 		AREA	M_DADOS, DATA, READWRITE
 			
 vtg		SPACE	tam		

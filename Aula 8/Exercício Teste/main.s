@@ -1,0 +1,19 @@
+		EXPORT  __main
+			
+		AREA	MDADOS, DATA, READWRITE
+vr1		SPACE	4
+vr2		SPACE	4
+	
+		AREA	MPROG, CODE, READONLY
+__main
+		LDR		R5,=vr1
+		MOV		R0,#&ABCD
+		MOVT	R0,#&8654
+		MOV		R1,R0
+		MOV		R2,R1
+		ADD		R3,R2,R1
+		STR		R3,[R5]
+		SUB		R4,R3,R2
+		STR		R3,[R5, #vr2-vr1]
+LOOP	B		LOOP
+		END
